@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * Central interface to provide configuration for an application.
  * This is read-only while the application is running, but may be
  * reloaded if the implementation supports this.
+ * 中央接口，为应用程序提供配置。在应用程序运行时，它是只读的，但是如果实现支持，则可以重新加载。
  *
  * <p>An ApplicationContext provides:
  * <ul>

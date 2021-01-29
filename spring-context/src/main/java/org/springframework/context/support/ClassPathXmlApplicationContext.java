@@ -135,12 +135,14 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @see #refresh()
 	 */
 	public ClassPathXmlApplicationContext(
-			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
+			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent
+	)
 			throws BeansException {
 
 		super(parent);
-		setConfigLocations(configLocations);
+		setConfigLocations(configLocations);// 设置配置位置
 		if (refresh) {
+			logger.info("------------------------------   第四步： 调用 refresh() 方法 ----------------------------------");
 			refresh();
 		}
 	}

@@ -133,9 +133,11 @@ public abstract class BeanUtils {
 	public static <T> T instantiateClass(Class<T> clazz) throws BeanInstantiationException {
 		Assert.notNull(clazz, "Class must not be null");
 		if (clazz.isInterface()) {
+			//logger.info("========================判断是否是接口	==========="+clazz.getName());
 			throw new BeanInstantiationException(clazz, "Specified class is an interface");
 		}
 		try {
+			//logger.info("=========================反射创建实例：类加载=========="+clazz.getName());
 			return instantiateClass(clazz.getDeclaredConstructor());
 		}
 		catch (NoSuchMethodException ex) {
@@ -618,15 +620,15 @@ public abstract class BeanUtils {
 	public static boolean isSimpleValueType(Class<?> type) {
 		return (Void.class != type && void.class != type &&
 				(ClassUtils.isPrimitiveOrWrapper(type) ||
-				Enum.class.isAssignableFrom(type) ||
-				CharSequence.class.isAssignableFrom(type) ||
-				Number.class.isAssignableFrom(type) ||
-				Date.class.isAssignableFrom(type) ||
-				Temporal.class.isAssignableFrom(type) ||
-				URI.class == type ||
-				URL.class == type ||
-				Locale.class == type ||
-				Class.class == type));
+						Enum.class.isAssignableFrom(type) ||
+						CharSequence.class.isAssignableFrom(type) ||
+						Number.class.isAssignableFrom(type) ||
+						Date.class.isAssignableFrom(type) ||
+						Temporal.class.isAssignableFrom(type) ||
+						URI.class == type ||
+						URL.class == type ||
+						Locale.class == type ||
+						Class.class == type));
 	}
 
 
@@ -695,7 +697,7 @@ public abstract class BeanUtils {
 	 * @see BeanWrapper
 	 */
 	private static void copyProperties(Object source, Object target, @Nullable Class<?> editable,
-			@Nullable String... ignoreProperties) throws BeansException {
+									   @Nullable String... ignoreProperties) throws BeansException {
 
 		Assert.notNull(source, "Source must not be null");
 		Assert.notNull(target, "Target must not be null");

@@ -102,8 +102,8 @@ public abstract class AbstractApplicationEventMulticaster
 	@Override
 	public void addApplicationListener(ApplicationListener<?> listener) {
 		synchronized (this.defaultRetriever) {
-			// Explicitly remove target for a proxy, if registered already,
-			// in order to avoid double invocations of the same listener.
+			// Explicitly remove target for a proxy, if registered already,  明确删除代理的目标（如果已注册），
+			// in order to avoid double invocations of the same listener.   为了避免同一侦听器的两次调用。
 			Object singletonTarget = AopProxyUtils.getSingletonTarget(listener);
 			if (singletonTarget instanceof ApplicationListener) {
 				this.defaultRetriever.applicationListeners.remove(singletonTarget);

@@ -27,6 +27,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HandlesTypes;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
@@ -36,6 +38,11 @@ import org.springframework.util.ReflectionUtils;
  * configuration of the servlet container using Spring's {@link WebApplicationInitializer}
  * SPI as opposed to (or possibly in combination with) the traditional
  * {@code web.xml}-based approach.
+ *
+ * Servlet 3.0 {@link ServletContainerInitializer}
+ * 设计为使用Spring的{@link WebApplicationInitializer}
+ * SPI支持基于代码的servlet容器配置，这与传统的基于
+ * {@code web.xml}的方法相反（或可能与之结合）。
  *
  * <h2>Mechanism of Operation</h2>
  * This class will be loaded and instantiated and have its {@link #onStartup}
@@ -112,6 +119,9 @@ import org.springframework.util.ReflectionUtils;
 @HandlesTypes(WebApplicationInitializer.class)
 public class SpringServletContainerInitializer implements ServletContainerInitializer {
 
+	protected final Log logger = LogFactory.getLog(getClass());
+
+
 	/**
 	 * Delegate the {@code ServletContext} to any {@link WebApplicationInitializer}
 	 * implementations present on the application classpath.
@@ -144,29 +154,31 @@ public class SpringServletContainerInitializer implements ServletContainerInitia
 
 		List<WebApplicationInitializer> initializers = new LinkedList<>();
 
+		logger.info("-------------------------------       初始化spring WEB  工程      -----------------------------------");
+
 		if (webAppInitializerClasses != null) {
 			for (Class<?> waiClass : webAppInitializerClasses) {
 				// Be defensive: Some servlet containers provide us with invalid classes,
-				// no matter what @HandlesTypes says...
-				if (!waiClass.isInterface() && !Modifier.isAbstract(waiClass.getModifiers()) &&
-						WebApplicationInitializer.class.isAssignableFrom(waiClass)) {
+				// no matter what @HandlesTypes says...   无论@HandlesTypes怎么说，某些servlet容器都会为我们提供无效的类...
+				if (!waiClass.isInterface() && !Modifier.isAbstract(waiClass.getModifiers()) && WebApplicationInitializer.class.isAssignableFrom(waiClass)) {
 					try {
-						initializers.add((WebApplicationInitializer)
-								ReflectionUtils.accessibleConstructor(waiClass).newInstance());
+						initializers.add(
+								(WebApplicationInitializer) ReflectionUtils.accessibleConstructor(waiClass).newInstance()
+						);
 					}
 					catch (Throwable ex) {
-						throw new ServletException("Failed to instantiate WebApplicationInitializer class", ex);
+						throw new ServletException("Failed to instantiate WebApplicationInitializer class 无法实例化WebApplicationInitializer类", ex);
 					}
 				}
 			}
 		}
 
 		if (initializers.isEmpty()) {
-			servletContext.log("No Spring WebApplicationInitializer types detected on classpath");
+			servletContext.log("No Spring WebApplicationInitializer types detected on classpath。。 在类路径上未检测到Spring WebApplicationInitializer类型");
 			return;
 		}
 
-		servletContext.log(initializers.size() + " Spring WebApplicationInitializers detected on classpath");
+		servletContext.log(initializers.size() + " Spring WebApplicationInitializers detected on classpath  在类路径上检测到Spring WebApplicationInitializers");
 		AnnotationAwareOrderComparator.sort(initializers);
 		for (WebApplicationInitializer initializer : initializers) {
 			initializer.onStartup(servletContext);

@@ -48,6 +48,9 @@ import org.springframework.util.ErrorHandler;
  */
 public class SimpleApplicationEventMulticaster extends AbstractApplicationEventMulticaster {
 
+	private static final Log logger = LogFactory.getLog(SimpleApplicationEventMulticaster.class);
+
+
 	@Nullable
 	private Executor taskExecutor;
 
@@ -124,6 +127,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 
 	@Override
 	public void multicastEvent(ApplicationEvent event) {
+		logger.info("--------------------------------       应用事件   --------------------------------");
 		multicastEvent(event, resolveDefaultEventType(event));
 	}
 

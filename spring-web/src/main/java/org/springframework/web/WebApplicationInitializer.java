@@ -24,6 +24,8 @@ import javax.servlet.ServletException;
  * {@link ServletContext} programmatically -- as opposed to (or possibly in conjunction
  * with) the traditional {@code web.xml}-based approach.
  *
+ * 在Servlet 3.0+环境中实现的接口，以便以编程方式配置{@link ServletContext}，这与传统的基于{@code web.xml}的方法相反（或可能与之结合）。
+ *
  * <p>Implementations of this SPI will be detected automatically by {@link
  * SpringServletContainerInitializer}, which itself is bootstrapped automatically
  * by any Servlet 3.0 container. See {@linkplain SpringServletContainerInitializer its

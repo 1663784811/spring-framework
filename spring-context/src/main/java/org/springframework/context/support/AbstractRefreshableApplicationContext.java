@@ -124,6 +124,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			closeBeanFactory();
 		}
 		try {
+			logger.info("------------------------------         创建beanFactory        ----------------------------------");
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
@@ -165,8 +166,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	public final ConfigurableListableBeanFactory getBeanFactory() {
 		DefaultListableBeanFactory beanFactory = this.beanFactory;
 		if (beanFactory == null) {
-			throw new IllegalStateException("BeanFactory not initialized or already closed - " +
-					"call 'refresh' before accessing beans via the ApplicationContext");
+			throw new IllegalStateException("BeanFactory not initialized or already closed - " + "call 'refresh' before accessing beans via the ApplicationContext");
 		}
 		return beanFactory;
 	}

@@ -105,6 +105,7 @@ public abstract class ClassUtils {
 	/**
 	 * Map with common Java language class name as key and corresponding Class as value.
 	 * Primarily for efficient deserialization of remote invocations.
+	 * 使用通用Java语言类名称作为键，对应的Class作为值进行映射。主要是为了对远程调用进行有效的反序列化。
 	 */
 	private static final Map<String, Class<?>> commonClassCache = new HashMap<>(64);
 

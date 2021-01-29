@@ -20,6 +20,8 @@ package org.springframework.context;
  * Callback interface for initializing a Spring {@link ConfigurableApplicationContext}
  * prior to being {@linkplain ConfigurableApplicationContext#refresh() refreshed}.
  *
+ *  回调接口，用于在刷新{@linkplain ConfigurableApplicationContextrefresh（）}之前初始化Spring {@link ConfigurableApplicationContext}。
+ *
  * <p>Typically used within web applications that require some programmatic initialization
  * of the application context. For example, registering property sources or activating
  * profiles against the {@linkplain ConfigurableApplicationContext#getEnvironment()

@@ -190,8 +190,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	static {
 		try {
 			// Detect Equinox OSGi (e.g. on WebSphere 6.1)
-			Class<?> fileLocatorClass = ClassUtils.forName("org.eclipse.core.runtime.FileLocator",
-					PathMatchingResourcePatternResolver.class.getClassLoader());
+			Class<?> fileLocatorClass = ClassUtils.forName("org.eclipse.core.runtime.FileLocator", PathMatchingResourcePatternResolver.class.getClassLoader());
 			equinoxResolveMethod = fileLocatorClass.getMethod("resolve", URL.class);
 			logger.trace("Found Equinox FileLocator for OSGi bundle URL resolution");
 		}
@@ -202,7 +201,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 
 	private final ResourceLoader resourceLoader;
-
+	//   路径匹配
 	private PathMatcher pathMatcher = new AntPathMatcher();
 
 
@@ -221,7 +220,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	 * @param resourceLoader the ResourceLoader to load root directories and
 	 * actual resources with
 	 */
-	public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {
+	public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {			//   其它是  AbstractApplicationContext  只是实现ResourceLoader接口而已
 		Assert.notNull(resourceLoader, "ResourceLoader must not be null");
 		this.resourceLoader = resourceLoader;
 	}

@@ -368,6 +368,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	public DispatcherServlet() {
 		super();
 		setDispatchOptionsRequest(true);
+		logger.info("=======================      实例化spring mvc       ====================");
 	}
 
 	/**
@@ -910,8 +911,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logRequest(request);
 
-		// Keep a snapshot of the request attributes in case of an include,
-		// to be able to restore the original attributes after the include.
+		// Keep a snapshot of the request attributes in case of an include, 如果包含，请保留请求属性的快照，
+		// to be able to restore the original attributes after the include. 以便在包含之后恢复原始属性。
 		Map<String, Object> attributesSnapshot = null;
 		if (WebUtils.isIncludeRequest(request)) {
 			attributesSnapshot = new HashMap<>();
@@ -924,7 +925,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			}
 		}
 
-		// Make framework objects available to handlers and view objects.
+		// Make framework objects available to handlers and view objects.  使框架对象可用于处理程序并查看对象。
 		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
 		request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
 		request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
@@ -996,6 +997,13 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @throws Exception in case of any kind of processing failure
+	 *
+	 * 处理向处理程序的实际分派。
+	 * <p>将通过依次应用servlet的HandlerMappings获得处理程序。
+	 * 通过查询Servlet的已安装HandlerAdapter来查找支持该处理程序类的第一个HandlerAdapter，
+	 * 从而获得HandlerAdapter。
+	 * <p>
+	 *     所有HTTP方法均由该方法处理。由HandlerAdapters或处理程序本身决定可接受的方法。
 	 */
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpServletRequest processedRequest = request;
@@ -1012,17 +1020,17 @@ public class DispatcherServlet extends FrameworkServlet {
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
-				// Determine handler for the current request.
+				// Determine handler for the current request. 确定当前请求的处理程序。
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
-				// Determine handler adapter for the current request.
+				// Determine handler adapter for the current request.  确定当前请求的处理程序适配器。
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
-				// Process last-modified header, if supported by the handler.
+				// Process last-modified header, if supported by the handler.  如果处理程序支持，则处理最后修改的标头。
 				String method = request.getMethod();
 				boolean isGet = "GET".equals(method);
 				if (isGet || "HEAD".equals(method)) {

@@ -66,9 +66,9 @@ import org.springframework.util.StringUtils;
 
 /**
  * Delegate for resolving constructors and factory methods.
- *
+ * 代表解析构造函数和工厂方法。
  * <p>Performs constructor resolution through argument matching.
- *
+ *  通过参数匹配执行构造函数解析
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @author Mark Fisher
@@ -392,7 +392,7 @@ class ConstructorResolver {
 	 */
 	public BeanWrapper instantiateUsingFactoryMethod(
 			String beanName, RootBeanDefinition mbd, @Nullable Object[] explicitArgs) {
-
+		logger.info("=====================================   instantiateUsingFactoryMethod   =================");
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 		this.beanFactory.initBeanWrapper(bw);
 

@@ -87,7 +87,7 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	@Override
 	public final void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
+		logger.info("========================================= spring Web    OncePerRequestFilter  doFilter  ======================================");
 		if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
 			throw new ServletException("OncePerRequestFilter just supports HTTP requests");
 		}

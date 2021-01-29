@@ -586,6 +586,7 @@ public abstract class Assert {
 
 	/**
 	 * Assert that the provided object is an instance of the provided class.
+	 * 断言所提供的对象是所提供类的实例。
 	 * <pre class="code">Assert.instanceOf(Foo.class, foo, "Foo expected");</pre>
 	 * @param type the type to check against
 	 * @param obj the object to check
@@ -605,6 +606,7 @@ public abstract class Assert {
 
 	/**
 	 * Assert that the provided object is an instance of the provided class.
+	 * 断言所提供的对象是所提供类的实例。
 	 * <pre class="code">
 	 * Assert.instanceOf(Foo.class, foo, () -&gt; "Processing " + Foo.class.getSimpleName() + ":");
 	 * </pre>
@@ -624,6 +626,7 @@ public abstract class Assert {
 
 	/**
 	 * Assert that the provided object is an instance of the provided class.
+	 * 断言所提供的对象是所提供类的实例。
 	 * <pre class="code">Assert.instanceOf(Foo.class, foo);</pre>
 	 * @param type the type to check against
 	 * @param obj the object to check

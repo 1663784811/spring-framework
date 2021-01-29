@@ -41,7 +41,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * General purpose factory loading mechanism for internal use within the framework.
- *
+ *  框架内部内部使用的通用工厂加载机制。
  * <p>{@code SpringFactoriesLoader} {@linkplain #loadFactories loads} and instantiates
  * factories of a given type from {@value #FACTORIES_RESOURCE_LOCATION} files which
  * may be present in multiple JAR files in the classpath. The {@code spring.factories}
@@ -111,27 +111,36 @@ public final class SpringFactoriesLoader {
 	 * Load the fully qualified class names of factory implementations of the
 	 * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
 	 * class loader.
-	 * @param factoryType the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading resources; can be
+	 *  使用给定的类加载器从{@value FACTORIES_RESOURCE_LOCATION}加载给定类型的工厂实现的标准类名。
+	 * @param factoryType the interface or abstract class representing the factory  类型
+	 * @param classLoader the ClassLoader to use for loading resources; can be  类加载器
 	 * {@code null} to use the default
 	 * @throws IllegalArgumentException if an error occurs while loading factory names
 	 * @see #loadFactories
+	 *
+	 * spring 类加载工厂
+	 *
 	 */
 	public static List<String> loadFactoryNames(Class<?> factoryType, @Nullable ClassLoader classLoader) {
 		String factoryTypeName = factoryType.getName();
 		return loadSpringFactories(classLoader).getOrDefault(factoryTypeName, Collections.emptyList());
 	}
 
+	/**
+	 *   logger.info("===== spring :　先判断cache中是否有，有则返回，没有则创建");
+	 * @param classLoader
+	 * @return
+	 */
 	private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
 		MultiValueMap<String, String> result = cache.get(classLoader);
 		if (result != null) {
 			return result;
 		}
-
 		try {
-			Enumeration<URL> urls = (classLoader != null ?
-					classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :
-					ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));
+			// 加载  META-INF/spring.factories
+			// 类加载器   ClassLoader.getSystemResources（） 、 classLoader.getResources
+			Enumeration<URL> urls = (classLoader != null ? classLoader.getResources(FACTORIES_RESOURCE_LOCATION) : ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));
+			logger.info("----------------------  加载  xxxxxxxxxxx.jar!/META-INF/spring.factories   ----------------------------");
 			result = new LinkedMultiValueMap<>();
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
@@ -140,16 +149,17 @@ public final class SpringFactoriesLoader {
 				for (Map.Entry<?, ?> entry : properties.entrySet()) {
 					String factoryTypeName = ((String) entry.getKey()).trim();
 					for (String factoryImplementationName : StringUtils.commaDelimitedListToStringArray((String) entry.getValue())) {
+						// factoryTypeName:  类名 例org.springframework.data.web.config.SpringDataJacksonModules
 						result.add(factoryTypeName, factoryImplementationName.trim());
 					}
 				}
 			}
+			// 加入 cache 第二次 直接从 cache 中取
 			cache.put(classLoader, result);
 			return result;
 		}
 		catch (IOException ex) {
-			throw new IllegalArgumentException("Unable to load factories from location [" +
-					FACTORIES_RESOURCE_LOCATION + "]", ex);
+			throw new IllegalArgumentException("Unable to load factories from location [" + FACTORIES_RESOURCE_LOCATION + "]", ex);
 		}
 	}
 

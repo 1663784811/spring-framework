@@ -178,6 +178,10 @@ public abstract class ReflectionUtils {
 	 * @return the constructor reference
 	 * @throws NoSuchMethodException if no such constructor exists
 	 * @since 5.0
+	 *
+	 * 获取给定类和参数的可访问构造函数。
+	 * 则自5.0起
+	 *
 	 */
 	public static <T> Constructor<T> accessibleConstructor(Class<T> clazz, Class<?>... parameterTypes)
 			throws NoSuchMethodException {

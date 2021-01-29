@@ -40,11 +40,11 @@ import org.springframework.util.StringUtils;
  * Standard implementation of the
  * {@link org.springframework.beans.factory.config.BeanExpressionResolver}
  * interface, parsing and evaluating Spring EL using Spring's expression module.
- *
+ *  接口的标准实现，使用Spring的表达式模块解析和评估Spring EL。
  * <p>All beans in the containing {@code BeanFactory} are made available as
  * predefined variables with their common bean name, including standard context
  * beans such as "environment", "systemProperties" and "systemEnvironment".
- *
+ *  包含{@code BeanFactory}的所有bean都可以使用其公共bean名称作为预定义变量使用，包括标准上下文bean，例如“ environment”，“ systemProperties”和“ systemEnvironment”。
  * @author Juergen Hoeller
  * @since 3.0
  * @see BeanExpressionContext#getBeanFactory()
