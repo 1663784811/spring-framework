@@ -13,6 +13,15 @@ public class SpringTest001 {
 		User bean = context.getBean(User.class);
 
 
+		String name = bean.getName();
+
+
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
 
 
 

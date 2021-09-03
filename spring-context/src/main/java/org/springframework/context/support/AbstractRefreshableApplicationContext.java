@@ -126,8 +126,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		try {
 			logger.info("------------------------------         创建beanFactory        ----------------------------------");
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
-			beanFactory.setSerializationId(getId());
+			beanFactory.setSerializationId(getId());  // 指定一个ID以进行序列化，如果需要的话，允许将该BeanFactory从该ID反序列化回BeanFactory对象
 			customizeBeanFactory(beanFactory);
+			logger.info("------------------------------   loadBeanDefinitions  加载bean定义     ----------------------------------");
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
 		}
@@ -200,6 +201,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	/**
 	 * Customize the internal bean factory used by this context.
 	 * Called for each {@link #refresh()} attempt.
+	 * 定制此上下文使用的内部bean工厂。每次尝试{@link refresh（）}时都要调用。
 	 * <p>The default implementation applies this context's
 	 * {@linkplain #setAllowBeanDefinitionOverriding "allowBeanDefinitionOverriding"}
 	 * and {@linkplain #setAllowCircularReferences "allowCircularReferences"} settings,
@@ -223,6 +225,10 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	/**
 	 * Load bean definitions into the given bean factory, typically through
 	 * delegating to one or more bean definition readers.
+	 *
+	 * 通常通过委派一个或多个bean定义读取器，
+	 * 将bean定义加载到给定的bean工厂中
+	 *
 	 * @param beanFactory the bean factory to load bean definitions into
 	 * @throws BeansException if parsing of the bean definitions failed
 	 * @throws IOException if loading of bean definition files failed

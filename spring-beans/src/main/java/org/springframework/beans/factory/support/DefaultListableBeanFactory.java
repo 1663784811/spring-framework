@@ -510,23 +510,41 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return resolvedBeanNames;
 	}
 
+	/**
+	 *
+	 * @param type   类型
+	 * @param includeNonSingletons  包括非单例
+	 * @param allowEagerInit    允许急于初始化
+	 * @return
+	 */
 	private String[] doGetBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit) {
 		List<String> result = new ArrayList<>();
 
-		// Check all bean definitions.
+		// Check all bean definitions.  检查所有bean定义。
 		for (String beanName : this.beanDefinitionNames) {
+			//  如果未将bean名称定义为其他bean的别名，则仅将bean视为合格。
 			// Only consider bean as eligible if the bean name is not defined as alias for some other bean.
 			if (!isAlias(beanName)) {
 				try {
 					RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 					// Only check bean definition if it is complete.
-					if (!mbd.isAbstract() && (allowEagerInit ||
-							(mbd.hasBeanClass() || !mbd.isLazyInit() || isAllowEagerClassLoading()) &&
-									!requiresEagerInitForType(mbd.getFactoryBeanName()))) {
+					if (
+							!mbd.isAbstract() &&
+							(
+									allowEagerInit
+									|| (mbd.hasBeanClass() || !mbd.isLazyInit() || isAllowEagerClassLoading())
+									&& !requiresEagerInitForType(mbd.getFactoryBeanName())
+							)
+					) {
+						// 判断是否是工厂 bean
 						boolean isFactoryBean = isFactoryBean(beanName, mbd);
+						// 返回由此bean定义修饰的目标定义（如果有）。
 						BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();
+
 						boolean matchFound = false;
+						//  允许工厂Bean初始化
 						boolean allowFactoryBeanInit = (allowEagerInit || containsSingleton(beanName));
+						//  是非懒惰装饰的
 						boolean isNonLazyDecorated = (dbd != null && !mbd.isLazyInit());
 						if (!isFactoryBean) {
 							if (includeNonSingletons || isSingleton(beanName, mbd, dbd)) {
@@ -566,20 +584,24 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 		}
-
+		// 也检查手动注册的单例。
 		// Check manually registered singletons too.
 		for (String beanName : this.manualSingletonNames) {
 			try {
+				// 如果是FactoryBean，则匹配由FactoryBean创建的对象
 				// In case of FactoryBean, match object created by FactoryBean.
 				if (isFactoryBean(beanName)) {
 					if ((includeNonSingletons || isSingleton(beanName)) && isTypeMatch(beanName, type)) {
 						result.add(beanName);
+						// 找到此bean的匹配项：不再匹配FactoryBean本身。
 						// Match found for this bean: do not match FactoryBean itself anymore.
 						continue;
 					}
+					// 如果是FactoryBean，请尝试接下来匹配FactoryBean本身
 					// In case of FactoryBean, try to match FactoryBean itself next.
 					beanName = FACTORY_BEAN_PREFIX + beanName;
 				}
+				// 匹配原始bean实例（可能是原始FactoryBean）。
 				// Match raw bean instance (might be raw FactoryBean).
 				if (isTypeMatch(beanName, type)) {
 					result.add(beanName);

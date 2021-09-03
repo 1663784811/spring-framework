@@ -539,45 +539,45 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			logger.info("--------------------------  refresh()-> 2.obtainFreshBeanFactory() 告诉子类刷新内部bean工厂 -------------------------");
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 			// Prepare the bean factory for use in this context.  准备在这种情况下使用的bean工厂。
-			logger.info("--------------------------  refresh()-> 2.prepareBeanFactory(beanFactory) 准备在这种情况下使用的bean工厂 -------------------------");
+			logger.info("--------------------------  refresh()-> 3.prepareBeanFactory(beanFactory) 准备在这种情况下使用的bean工厂 -------------------------");
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
-				logger.info("--------------------------    refresh()-> 3.postProcessBeanFactory 允许在上下文子类中对bean工厂进行后处理 ( 扩展用 ) --------------------------");
+				logger.info("--------------------------    refresh()-> 4.postProcessBeanFactory 允许在上下文子类中对bean工厂进行后处理 ( 扩展用 ) --------------------------");
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-				logger.info("--------------------------    refresh()-> 4.invokeBeanFactoryPostProcessors 实例化并调用所有注册的BeanFactoryPostProcessor Bean ---------------------");
+				logger.info("--------------------------    refresh()-> 5.invokeBeanFactoryPostProcessors 实例化并调用所有注册的BeanFactoryPostProcessor Bean ---------------------");
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
-				logger.info("--------------------------     refresh()-> 5.registerBeanPostProcessors: 注册拦截bean创建的bean处理器。 --------------------------");
+				logger.info("--------------------------     refresh()-> 6.registerBeanPostProcessors: 注册拦截bean创建的bean处理器。 --------------------------");
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				logger.info("--------------------------      refresh()-> 6.initMessageSource: 初始化此上下文的消息源。  --------------------------");
+				logger.info("--------------------------      refresh()-> 7.initMessageSource: 初始化此上下文的消息源。  --------------------------");
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
-				logger.info("--------------------------     refresh()-> 7.initApplicationEventMulticaster: 为此上下文初始化事件多宿主  --------------------------");
+				logger.info("--------------------------     refresh()-> 8.initApplicationEventMulticaster: 为此上下文初始化事件多宿主  --------------------------");
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
-				logger.info("--------------------------       refresh()-> 8.onRefresh: 初始化特定上下文子类中的其他特殊bean。      --------------------------");
+				logger.info("--------------------------       refresh()-> 9.onRefresh: 初始化特定上下文子类中的其他特殊bean。      --------------------------");
 				logger.info("--------------------------       扩展  spring boot 用它来创建tomcat web 服务       --------------------------");
 				onRefresh();
 
 				// Check for listener beans and register them.
-				logger.info("--------------------------     refresh()-> 9.registerListeners: 注册监听器   --------------------------   ");
+				logger.info("--------------------------     refresh()-> 10.registerListeners: 注册监听器   --------------------------   ");
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				logger.info("--------------------------       refresh()-> 10.finishBeanFactoryInitialization : 实例化所有剩余的（非延迟初始化）单例。 --------------------------");
+				logger.info("--------------------------       refresh()-> 11.finishBeanFactoryInitialization : 实例化所有剩余的（非延迟初始化）单例。 --------------------------");
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
-				logger.info("--------------------------      refresh()-> 10.finishRefresh : 最后一步：发布相应的事件。 --------------------------      ");
+				logger.info("--------------------------      refresh()-> 12.finishRefresh : 最后一步：发布相应的事件。 --------------------------      ");
 				finishRefresh();
 			} catch (BeansException ex) {
 				if (logger.isWarnEnabled()) {
@@ -1344,6 +1344,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	/**
 	 * Return the internal bean factory of the parent context if it implements
 	 * ConfigurableApplicationContext; else, return the parent context itself.
+	 *  如果实现了ConfigurableApplicationContext，则返回父上下文的内部bean工厂；否则，返回false。否则，返回父上下文本身。
 	 * @see org.springframework.context.ConfigurableApplicationContext#getBeanFactory
 	 */
 	@Nullable
@@ -1434,6 +1435,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	/**
 	 * Subclasses must implement this method to perform the actual configuration load.
 	 * The method is invoked by {@link #refresh()} before any other initialization work.
+	 *
+	 * 子类必须实现此方法才能执行实际的配置负载。在进行任何其他初始化工作之前，该方法由refresh（）调用。
+	 *
 	 * <p>A subclass will either create a new bean factory and hold a reference to it,
 	 * or return a single BeanFactory instance that it holds. In the latter case, it will
 	 * usually throw an IllegalStateException if refreshing the context more than once.
